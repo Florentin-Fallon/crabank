@@ -3,7 +3,6 @@ bin/
 obj/
 .DS_Store
 
-bank.db
 bank.db-shm
 bank.db-wal
 
