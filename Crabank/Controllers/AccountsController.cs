@@ -17,6 +17,17 @@ public class AccountsController : ControllerBase
         return db.Accounts.Take(10).ToArray();
     }
     
+    [HttpGet("/account/{bban}")]
+    public object GetAccount(long bban)
+    {
+        using BankDbContext db = new();
+        BankAccount? account = db.Accounts.Find(bban);
+
+        if (account == null) return NotFound();
+        
+        return Ok(account);
+    }
+    
     [HttpPost("/accounts")]
     public object CreateAccount([FromBody] AccountCreationDto dto)
     {
@@ -24,8 +35,8 @@ public class AccountsController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(dto.Name))
             return BadRequest("Invalid name");
-        if (string.IsNullOrWhiteSpace(dto.OwnerName))
-            return BadRequest("Invalid owner name");
+        if (string.IsNullOrWhiteSpace(dto.OwnerName) || dto.OwnerName.Length < 4)
+            return BadRequest("Invalid owner name (must be at least 4 characters long)");
 
         long bban = CrabankUtilities.GenerateBban();
         BankAccount account = new BankAccount
@@ -43,6 +54,6 @@ public class AccountsController : ControllerBase
         db.Add(account);
         db.SaveChanges();
 
-        return Created($"/accounts/{bban}", account);
+        return Created($"/account/{bban}", account);
     }
 }
