@@ -3,6 +3,8 @@ bin/
 obj/
 .DS_Store
 
+bank.db
+
 # Common node modules locations
 /node_modules
 /wwwroot/node_modules

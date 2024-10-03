@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Crabank.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crabank.Database;
 
 public class BankDbContext : DbContext
 {
+    public DbSet<BankAccount> Accounts { get; }
+    public DbSet<BankTransaction> Transactions { get; }
+    
     public BankDbContext()
     {
         
