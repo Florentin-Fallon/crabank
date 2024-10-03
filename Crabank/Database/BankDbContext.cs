@@ -5,8 +5,8 @@ namespace Crabank.Database;
 
 public class BankDbContext : DbContext
 {
-    public DbSet<BankAccount> Accounts { get; }
-    public DbSet<BankTransaction> Transactions { get; }
+    public DbSet<BankAccount> Accounts { get; set; }
+    public DbSet<BankTransaction> Transactions { get; set; }
     
     public BankDbContext()
     {
