@@ -7,6 +7,7 @@ public class BankAccount
 {
     public string Iban { get; set; }
     
+    public DateTime AccountCreationDate { get; set; }
     public string Name { get; set; }
     public double Amount { get; set; }
     public double CreditLimit { get; set; }
