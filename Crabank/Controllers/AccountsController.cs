@@ -35,8 +35,8 @@ public class AccountsController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(dto.Name))
             return BadRequest("Invalid name");
-        if (string.IsNullOrWhiteSpace(dto.OwnerName))
-            return BadRequest("Invalid owner name");
+        if (string.IsNullOrWhiteSpace(dto.OwnerName) || dto.OwnerName.Length < 4)
+            return BadRequest("Invalid owner name (must be at least 4 characters long)");
 
         long bban = CrabankUtilities.GenerateBban();
         BankAccount account = new BankAccount
