@@ -17,6 +17,17 @@ public class AccountsController : ControllerBase
         return db.Accounts.Take(10).ToArray();
     }
     
+    [HttpGet("/account/{bban}")]
+    public object GetAccount(long bban)
+    {
+        using BankDbContext db = new();
+        BankAccount? account = db.Accounts.Find(bban);
+
+        if (account == null) return NotFound();
+        
+        return Ok(account);
+    }
+    
     [HttpPost("/accounts")]
     public object CreateAccount([FromBody] AccountCreationDto dto)
     {
@@ -43,6 +54,6 @@ public class AccountsController : ControllerBase
         db.Add(account);
         db.SaveChanges();
 
-        return Created($"/accounts/{bban}", account);
+        return Created($"/account/{bban}", account);
     }
 }
