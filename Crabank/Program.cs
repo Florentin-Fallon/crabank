@@ -1,4 +1,5 @@
 using Crabank.Database;
+using Crabank.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 

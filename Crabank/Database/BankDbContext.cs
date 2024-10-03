@@ -7,6 +7,7 @@ public class BankDbContext : DbContext
 {
     public DbSet<BankAccount> Accounts { get; set; }
     public DbSet<BankTransaction> Transactions { get; set; }
+    public DbSet<BankAdvisor> Advisors { get; set; }
     
     public BankDbContext()
     {
