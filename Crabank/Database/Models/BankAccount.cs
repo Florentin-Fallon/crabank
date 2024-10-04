@@ -15,4 +15,13 @@ public class BankAccount
     public string Currency { get; set; }
     public double CreditLimit { get; set; }
     public BankAdvisor Advisor { get; set; }
+
+    public bool Take(double amount)
+    {
+        if (amount <= 0) return false;
+        if (Amount - amount < 0) return false;
+
+        Amount -= amount;
+        return true;
+    }
 }

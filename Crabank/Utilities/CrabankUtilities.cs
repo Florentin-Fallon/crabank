@@ -16,6 +16,9 @@ public static class CrabankUtilities
         
         return number;
     }
+
+    public static bool IsValidIban(string country, string input)
+        => !string.IsNullOrWhiteSpace(input) && input.StartsWith(country) && input.Replace(" ", "").Length == 26;
     
     public static string GenerateIban(long bban, string country, string ownerName)
     {

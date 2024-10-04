@@ -11,4 +11,11 @@ public class BankTransaction
     public BankAccount FromAccount { get; set; }
     public BankAccount ToAccount { get; set; }
     public string Label { get; set; }
+    public TransactionStatus Status { get; set; }
+}
+
+public enum TransactionStatus
+{
+    Succeeded,
+    Rejected
 }

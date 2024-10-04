@@ -14,11 +14,11 @@ public class AdvisorController : ControllerBase
         using BankDbContext db = new();
         
         if(string.IsNullOrWhiteSpace(advisor.FirstName))
-            return BadRequest("Invalid FirstName");
+            return BadRequest("Invalid first name");
         if(string.IsNullOrWhiteSpace(advisor.LastName))
-            return BadRequest("Invalid LastName");
+            return BadRequest("Invalid last name");
         if(string.IsNullOrWhiteSpace(advisor.Email) || !advisor.Email.Contains('@'))
-            return BadRequest("Invalid Email");
+            return BadRequest("Invalid email");
         
         db.Add(advisor);
         db.SaveChanges();
