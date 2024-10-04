@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Runtime.InteropServices;
+using System.Web;
 using Crabank.Database;
 using Crabank.Database.Dto;
 using Crabank.Database.Models;
@@ -9,8 +10,18 @@ namespace Crabank.Controllers;
 
 public class TransactionController : ControllerBase
 {
-    [HttpPost("/transactions")]
+    [HttpGet("/transactions/{guid:guid}")]
+    public object GetTransactionById(Guid guid)
+    {
+        using BankDbContext db = new();
 
+        BankTransaction? transaction = db.Transactions.Find(guid);
+        if (transaction == null) return NotFound();
+
+        return Ok(transaction);
+    }
+    
+    [HttpPost("/transactions")]
     public object CreateTransaction([FromBody] TransactionDto dto)
     {
         using BankDbContext db = new();
@@ -56,6 +67,6 @@ public class TransactionController : ControllerBase
         db.Transactions.Add(transaction);
         db.SaveChanges();
 
-        return Created(HttpUtility.UrlEncode($"/transactions/{transaction.Id.ToString()}"), transaction);
+        return Created($"/transactions/{transaction.Id.ToString()}", transaction);
     }
 }

@@ -32,6 +32,41 @@ public class AccountsController : ControllerBase
         return Ok(account);
     }
     
+    /// <summary>
+    /// Akunamatata !!!!!!
+    /// </summary>
+    /// <param name="bban"></param>
+    /// <returns></returns>
+    [HttpGet("/account/{bban}/transactions")]
+    public object GetAccountTransactions(long bban)
+    {
+        using BankDbContext db = new();
+        BankAccount? account = db.Accounts.Find(bban);
+        BankTransaction[] transactions = db.Transactions
+            .Include(transaction => transaction.FromAccount)
+            .Include(transaction => transaction.ToAccount)
+            .Where(transaction => transaction.FromAccount == account || transaction.ToAccount == account)
+            .ToArray();
+        List<TransactionResultDto> transactionResults = [];
+
+        foreach (BankTransaction transaction in transactions)
+        {
+            transactionResults.Add(new TransactionResultDto()
+            {
+                Type = (transaction.FromAccount == account ? TransactionType.Outwards : TransactionType.Inwards).ToString().ToLower(),
+                Status = transaction.Status.ToString().ToLower(),
+                Label = transaction.Label,
+                Currency = transaction.Currency,
+                Account = transaction.FromAccount == account ? transaction.ToAccount : transaction.FromAccount,
+                Amount = transaction.Amount
+            });
+        }
+
+        if (account == null) return NotFound();
+        
+        return Ok(transactionResults);
+    }
+    
     [HttpPost("/accounts")]
     public object CreateAccount([FromBody] AccountCreationDto dto)
     {
