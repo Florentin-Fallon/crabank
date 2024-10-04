@@ -33,7 +33,7 @@ public class AccountsController : ControllerBase
     }
     
     /// <summary>
-    /// Akunamatata !!!!!!
+    /// Get all the accounts' transactions
     /// </summary>
     /// <param name="bban"></param>
     /// <returns></returns>
