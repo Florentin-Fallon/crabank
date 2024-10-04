@@ -3,6 +3,7 @@ using Crabank.Database.Dto;
 using Crabank.Database.Models;
 using Crabank.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crabank.Controllers;
 
@@ -14,7 +15,10 @@ public class AccountsController : ControllerBase
     {
         using BankDbContext db = new();
 
-        return db.Accounts.Take(10).ToArray();
+        return db.Accounts
+            .Include(account => account.Advisor)
+            .Take(10)
+            .ToArray();
     }
     
     [HttpGet("/account/{bban}")]
