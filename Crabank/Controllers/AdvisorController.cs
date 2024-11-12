@@ -7,6 +7,11 @@ namespace Crabank.Controllers;
 
 public class AdvisorController : ControllerBase
 {
+    /// <summary>
+    /// Create an advisor
+    /// </summary>
+    /// <param name="advisor"></param>
+    /// <returns></returns>
     [HttpPost("/advisors")]
     public object CreateAdvisor([FromBody] BankAdvisor advisor)
     {
@@ -25,6 +30,11 @@ public class AdvisorController : ControllerBase
         return Created("/advisors", advisor);
     }
 
+    /// <summary>
+    /// Get all advisors by page (containing 10 items each)
+    /// </summary>
+    /// <param name="page"></param>
+    /// <returns></returns>
     [HttpGet("/advisors")]
     public object GetAdvisors(int page = 0)
     {
@@ -35,6 +45,11 @@ public class AdvisorController : ControllerBase
         return Ok(db.Advisors.AsEnumerable().Take(pageOffset..(pageOffset+10)).ToArray());
     }
 
+    /// <summary>
+    /// Get an advisor by its id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("/advisor/{id}")]
     public object GetAdvisor(int id = 0)
     {

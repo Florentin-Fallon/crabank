@@ -10,6 +10,11 @@ namespace Crabank.Controllers;
 
 public class TransactionController : ControllerBase
 {
+    /// <summary>
+    /// Get a transaction by its GUID
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <returns></returns>
     [HttpGet("/transactions/{guid:guid}")]
     public object GetTransactionById(Guid guid)
     {
@@ -21,6 +26,11 @@ public class TransactionController : ControllerBase
         return Ok(transaction);
     }
     
+    /// <summary>
+    /// Create a transaction from one account to another
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPost("/transactions")]
     public object CreateTransaction([FromBody] TransactionDto dto)
     {

@@ -10,6 +10,10 @@ namespace Crabank.Controllers;
 [ApiController]
 public class AccountsController : ControllerBase
 {
+    /// <summary>
+    /// Get the 10 first bank accounts
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("/accounts")]
     public BankAccount[] GetAllAccounts()
     {
@@ -21,6 +25,11 @@ public class AccountsController : ControllerBase
             .ToArray();
     }
     
+    /// <summary>
+    /// Get an account by its bban (the numerical id of the account)
+    /// </summary>
+    /// <param name="bban"></param>
+    /// <returns></returns>
     [HttpGet("/account/{bban}")]
     public object GetAccount(long bban)
     {
@@ -33,7 +42,7 @@ public class AccountsController : ControllerBase
     }
     
     /// <summary>
-    /// Get all the accounts' transactions
+    /// Get all the accounts' transactions by its bban (the numerical id of the account)
     /// </summary>
     /// <param name="bban"></param>
     /// <returns></returns>
@@ -67,6 +76,11 @@ public class AccountsController : ControllerBase
         return Ok(transactionResults);
     }
     
+    /// <summary>
+    /// Create a bank account
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPost("/accounts")]
     public object CreateAccount([FromBody] AccountCreationDto dto)
     {
