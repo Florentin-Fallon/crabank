@@ -34,4 +34,12 @@ public class AdvisorController : ControllerBase
         
         return Ok(db.Advisors.AsEnumerable().Take(pageOffset..(pageOffset+10)).ToArray());
     }
+
+    [HttpGet("/advisor/{id}")]
+    public object GetAdvisor(int id = 0)
+    {
+        using BankDbContext db = new();
+        
+        return Ok(db.Advisors.Find(id));
+    }
 }
