@@ -8,7 +8,6 @@ namespace Crabank.Controllers;
 public class AdvisorController : ControllerBase
 {
     [HttpPost("/advisors")]
-    
     public object CreateAdvisor([FromBody] BankAdvisor advisor)
     {
         using BankDbContext db = new();
@@ -24,5 +23,15 @@ public class AdvisorController : ControllerBase
         db.SaveChanges();
         
         return Created("/advisors", advisor);
+    }
+
+    [HttpGet("/advisors")]
+    public object GetAdvisors(int page = 0)
+    {
+        using BankDbContext db = new();
+
+        int pageOffset = page * 10;
+        
+        return Ok(db.Advisors.AsEnumerable().Take(pageOffset..(pageOffset+10)).ToArray());
     }
 }
