@@ -80,7 +80,7 @@ public class TransactionController : ControllerBase
 
         db.Transactions.Add(transaction);
         db.SaveChanges();
-        Notifications.SendAsync("New transaction", $"A new transaction has been made from {fromAccount.Name} (-{fromAccountAmount} {fromAccount.Currency}) to {toAccount.Name} (+{toAccountAmount} {toAccount.Currency}) with the amount of {dto.Amount} {dto.Currency} (converted to {amount} USD)");
+        Notifications.SendAsync("New transaction", $"A new transaction has been made from {fromAccount.Name} (-{Math.Round(fromAccountAmount, 2)} {fromAccount.Currency}) to {toAccount.Name} (+{Math.Round(toAccountAmount, 2)} {toAccount.Currency}) with the amount of {Math.Round(dto.Amount, 2)} {dto.Currency} (converted to {Math.Round(amount, 2)} USD)");
 
         return Created($"/transactions/{transaction.Id.ToString()}", transaction);
     }
