@@ -76,6 +76,7 @@ public class TransactionController : ControllerBase
 
         db.Transactions.Add(transaction);
         db.SaveChanges();
+        Notifications.SendAsync("New transaction", $"A new transaction has been made from {fromAccount.Name} to {toAccount.Name} with the amount of {dto.Amount} {dto.Currency}");
 
         return Created($"/transactions/{transaction.Id.ToString()}", transaction);
     }
