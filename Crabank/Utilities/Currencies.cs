@@ -165,7 +165,9 @@ public class Currencies
         { "YER", 250.00f },
         { "ZAR", 19.00f },
         { "ZMW", 22.50f },
-        { "ZWL", 5400.00f }
+        { "ZWL", 5400.00f },
+        { "ROBUX", 1/80f },
+        { "VBUCKS", 1/125f }
     };
 
     public static bool IsValid(string currency) => Dictionary.ContainsKey(currency);
