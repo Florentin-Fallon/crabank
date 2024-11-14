@@ -4,7 +4,7 @@ namespace Crabank.Utilities;
 
 public class Currencies
 {
-    public static Dictionary<string, float> Dictionary = new()
+    public static Dictionary<string, double> Dictionary = new()
     {
         { "AED", 3.67f },
         { "AFN", 87.25f },
@@ -167,4 +167,11 @@ public class Currencies
         { "ZMW", 22.50f },
         { "ZWL", 5400.00f }
     };
+
+    public static bool IsValid(string currency) => Dictionary.ContainsKey(currency);
+
+    public static double CurrencyToUsd(string inputCurrency, double value)
+        => Dictionary[inputCurrency] * value;
+    public static double UsdToCurrency(string inputCurrency, double value)
+        => value / Dictionary[inputCurrency];
 }

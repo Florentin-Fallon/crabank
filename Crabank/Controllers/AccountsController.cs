@@ -93,6 +93,8 @@ public class AccountsController : ControllerBase
         if (!Enum.TryParse(dto.Type, true, out BankAccountType accountType))
             return BadRequest($"Invalid bank account type, expected one of " +
                               $"{string.Join(", ", Enum.GetNames<BankAccountType>().Select(name => name.ToLower()))}");
+        if (string.IsNullOrWhiteSpace(dto.Currency) || !Currencies.IsValid(dto.Currency))
+            return BadRequest("Invalid currency, expected a currency like 'usd'");
         
         long bban = CrabankUtilities.GenerateBban();
         BankAccount account = new BankAccount
@@ -103,7 +105,7 @@ public class AccountsController : ControllerBase
             AccountCreationDate = DateTime.Now,
             Advisor = db.Advisors.Find(dto.AdvisorId ?? 1)!,
             Amount = 0,
-            Currency = dto.Currency ?? "EUR",
+            Currency = dto.Currency ?? "USD",
             Type = accountType,
             Bban = bban,
             Iban = CrabankUtilities.GenerateIban(bban, "FR", dto.OwnerName)
