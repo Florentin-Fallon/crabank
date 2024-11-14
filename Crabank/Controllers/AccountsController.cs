@@ -34,7 +34,9 @@ public class AccountsController : ControllerBase
     public object GetAccount(long bban)
     {
         using BankDbContext db = new();
-        BankAccount? account = db.Accounts.Find(bban);
+        BankAccount? account = db.Accounts
+            .Include(account => account.Advisor)
+            .FirstOrDefault(account => account.Bban == bban);
 
         if (account == null) return NotFound();
         

@@ -41,6 +41,7 @@ public class Currencies
         { "CUP", 24.00f },
         { "CVE", 110.50f },
         { "CZK", 22.05f },
+        { "DBL", 0.000120f },
         { "DJF", 178.00f },
         { "DKK", 6.85f },
         { "DOP", 56.55f },
