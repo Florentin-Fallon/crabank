@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Crabank.Database.Models;
 
 namespace Crabank.Database.Dto;
 
@@ -11,4 +12,5 @@ public class AccountCreationDto
     public double? CreditLimit { get; set; }
     public string? Currency { get; set; }
     public int? AdvisorId { get; set; }
+    public string? Type { get; set; }
 }

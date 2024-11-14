@@ -90,7 +90,10 @@ public class AccountsController : ControllerBase
             return BadRequest("Invalid name");
         if (string.IsNullOrWhiteSpace(dto.OwnerName) || dto.OwnerName.Length < 4)
             return BadRequest("Invalid owner name (must be at least 4 characters long)");
-
+        if (!Enum.TryParse(dto.Type, true, out BankAccountType accountType))
+            return BadRequest($"Invalid bank account type, expected one of " +
+                              $"{string.Join(", ", Enum.GetNames<BankAccountType>().Select(name => name.ToLower()))}");
+        
         long bban = CrabankUtilities.GenerateBban();
         BankAccount account = new BankAccount
         {
@@ -101,6 +104,7 @@ public class AccountsController : ControllerBase
             Advisor = db.Advisors.Find(dto.AdvisorId ?? 1)!,
             Amount = 0,
             Currency = dto.Currency ?? "EUR",
+            Type = accountType,
             Bban = bban,
             Iban = CrabankUtilities.GenerateIban(bban, "FR", dto.OwnerName)
         };
