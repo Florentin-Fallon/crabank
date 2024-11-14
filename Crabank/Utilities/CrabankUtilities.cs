@@ -36,4 +36,17 @@ public static class CrabankUtilities
 
         return $"{country}14 {ownerName[..4].ToUpper()} 9888 88{accountId}69";
     }
+
+    public static string GenerateCreditCardNumbers()
+    {
+        string final = "";
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++) final += Random.Shared.Next(9);
+            final += " ";
+        }        
+        
+        return final.Trim();
+    }
 }

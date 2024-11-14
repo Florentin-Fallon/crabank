@@ -16,6 +16,7 @@ public class BankAccount
     public double CreditLimit { get; set; }
     public BankAdvisor Advisor { get; set; }
     public BankAccountType Type { get; set; }
+    public ICollection<BankCard> Cards { get; set; }
 
     public bool Take(double amount)
     {

@@ -44,6 +44,68 @@ public class AccountsController : ControllerBase
     }
     
     /// <summary>
+    /// Get the list of cards associated to an account, by its bban (the numerical id of the account)
+    /// </summary>
+    /// <param name="bban"></param>
+    /// <returns></returns>
+    [HttpGet("/account/{bban}/cards")]
+    public object GetAccountCards(long bban)
+    {
+        using BankDbContext db = new();
+        BankAccount? account = db.Accounts
+            .Include(account => account.Cards)
+            .FirstOrDefault(account => account.Bban == bban);
+
+        if (account == null) return NotFound();
+        
+        return Ok(account.Cards);
+    }
+    
+    /// <summary>
+    /// Create a card and associate it to an account, by its bban (the numerical id of the account). AccountId and AccountBban are ignored for this request.
+    /// </summary>
+    /// <param name="bban"></param>
+    /// <returns></returns>
+    [HttpPost("/account/{bban}/cards")]
+    public object CreateAccountCard(long bban, [FromBody] CardCreationDto dto)
+    {
+        using BankDbContext db = new();
+        BankAccount? account = db.Accounts
+            .Include(account => account.Cards)
+            .FirstOrDefault(account => account.Bban == bban);
+
+        if (account == null) return NotFound();
+
+        if (!Enum.TryParse(dto.Type, true, out BankCardType accountType))
+            return BadRequest(
+                $"Invalid bank account type, must be one of {string.Join(", ", Enum.GetNames<BankCardType>().Select(s => s.ToLower()).ToArray())}");
+        if (!Enum.TryParse(dto.Network, true, out BankCardNetwork network))
+            return BadRequest(
+                $"Invalid bank network, must be one of {string.Join(", ", Enum.GetNames<BankCardNetwork>().Select(s => s.ToLower()).ToArray())}");
+        if (string.IsNullOrWhiteSpace(dto.Name))
+            return BadRequest("Invalid or empty card name");
+        if (string.IsNullOrWhiteSpace(dto.Style))
+            return BadRequest("Invalid or empty card style");
+
+        BankCard card = new BankCard
+        {
+            Account = account,
+            ExpirationDate = DateTime.Now.AddYears(5),
+            Name = dto.Name,
+            Numbers = CrabankUtilities.GenerateCreditCardNumbers(),
+            Type = accountType,
+            Network = network,
+            Style = dto.Style,
+            SecurityCode = (short)Random.Shared.Next(100, 1000)
+        };
+        
+        BankCard addedCard = db.Cards.Add(card).Entity;
+        db.SaveChanges();
+        
+        return Ok();
+    }
+    
+    /// <summary>
     /// Get all the accounts' transactions by its bban (the numerical id of the account)
     /// </summary>
     /// <param name="bban"></param>
