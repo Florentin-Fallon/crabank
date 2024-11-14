@@ -38,10 +38,10 @@ public class TransactionController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(dto.Label))
             return BadRequest("Invalid label");
-        if (string.IsNullOrWhiteSpace(dto.Currency))
-            return BadRequest("Invalid currency");
+        if (string.IsNullOrWhiteSpace(dto.Currency) || !Currencies.IsValid(dto.Currency))
+            return BadRequest("Invalid currency, expected a currency like 'usd'");
         if (dto.Amount <= 0)
-            return BadRequest("Invalid amount");
+            return BadRequest("Invalid amount (superior than and not zero)");
         if (!CrabankUtilities.IsValidIban("FR", dto.FromIban))
             return BadRequest("Invalid source IBAN");
         if (!CrabankUtilities.IsValidIban("FR", dto.ToIban))
@@ -55,9 +55,13 @@ public class TransactionController : ControllerBase
 
         TransactionStatus status = TransactionStatus.Succeeded;
 
-        if (fromAccount.Take(dto.Amount))
+        double amount = Currencies.CurrencyToUsd(dto.Currency, dto.Amount);
+        double fromAccountAmount = Currencies.UsdToCurrency(fromAccount.Currency, amount);
+        double toAccountAmount = Currencies.UsdToCurrency(toAccount.Currency, amount);
+
+        if (fromAccount.Take(fromAccountAmount))
         {
-            toAccount.Amount += dto.Amount;
+            toAccount.Amount += toAccountAmount;
             db.UpdateRange(fromAccount, toAccount);
         }
         else status = TransactionStatus.Rejected;
