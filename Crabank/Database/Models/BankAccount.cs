@@ -15,6 +15,7 @@ public class BankAccount
     public string Currency { get; set; }
     public double CreditLimit { get; set; }
     public BankAdvisor Advisor { get; set; }
+    public BankAccountType Type { get; set; }
 
     public bool Take(double amount)
     {
@@ -25,3 +26,10 @@ public class BankAccount
         return true;
     }
 }
+
+public enum BankAccountType
+{
+    Checking,
+    Savings,
+    Special
+} 
