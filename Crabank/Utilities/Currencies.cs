@@ -18,15 +18,15 @@ public class Currencies
         BankCurrency? currency = db.Currencies.Find(inputCurrency);
         if (currency == null) throw new Exception($"Currency {inputCurrency} not found");
         
-        return currency.ValueInUsd * value;
+        return value / currency.ValueInUsd;
     }
 
-    public static double UsdToCurrency(string inputCurrency, double value)
+    public static double UsdToCurrency(string outputCurrency, double value)
     {
         using BankDbContext db = new();
-        BankCurrency? currency = db.Currencies.Find(inputCurrency);
-        if (currency == null) throw new Exception($"Currency {inputCurrency} not found");
+        BankCurrency? currency = db.Currencies.Find(outputCurrency);
+        if (currency == null) throw new Exception($"Currency {outputCurrency} not found");
         
-        return value / currency.ValueInUsd;
+        return value * currency.ValueInUsd;
     }
 }

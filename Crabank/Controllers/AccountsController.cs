@@ -44,6 +44,26 @@ public class AccountsController : ControllerBase
     }
     
     /// <summary>
+    /// Delete an account by its bban (the numerical id of the account)
+    /// </summary>
+    /// <param name="bban"></param>
+    /// <returns></returns>
+    [HttpDelete("/account/{bban}")]
+    public object DeleteAccount(long bban)
+    {
+        using BankDbContext db = new();
+        BankAccount? account = db.Accounts
+            .Include(account => account.Advisor)
+            .FirstOrDefault(account => account.Bban == bban);
+
+        if (account == null) return NotFound();
+        db.Remove(account);
+        db.SaveChanges();
+        
+        return Ok();
+    }
+    
+    /// <summary>
     /// Get the list of cards associated to an account, by its bban (the numerical id of the account)
     /// </summary>
     /// <param name="bban"></param>
